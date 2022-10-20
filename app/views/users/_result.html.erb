@@ -1,0 +1,11 @@
+<div class="results-block">
+  <%= render 'layouts/messages' %> <%#render messages partial%>
+</div>
+
+<% if @stock %> <%# if we have an instance of stock, render these lines%>
+  <div class="card card-header results-block">
+    <strong>Symbol: </strong> <%= @stock.ticker%>
+    <strong>Symbol: </strong> <%= @stock.name%>
+    <strong>Price: </strong> <%= @stock.last_price%>
+  </div>
+<% end %>

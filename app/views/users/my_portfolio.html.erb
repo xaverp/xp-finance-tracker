@@ -15,6 +15,10 @@
     </div>
   <% end %>
 </div>
-<div id="results">
 
+<div id="results">
 </div>
+
+<% if !@tracked_stocks.empty? %> <%# This is saying to display only if it is not empty. If @tracked_stocks.empty is not true, render etc%>
+  <%= render 'stocks/list' %>
+<% end %>

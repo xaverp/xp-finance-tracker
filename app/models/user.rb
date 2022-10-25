@@ -50,4 +50,12 @@ class User < ApplicationRecord
   def self.matches(field_name, param) #because this is a class level method we need to add self. IRB example User.matches('email', '@gmail.com')
     where("#{field_name} like ?", "%#{param}%") #because we are in the user class already we removed User. email and @gmail was replaced with field_name and param
   end
+
+  def except_current_user(users) #this method excludes the signed in user from search results
+    users.reject { |user| user.id == self.id }
+  end
+
+  def not_friends_with?(id_of_friend) #method affirms you are not friends with search results
+    !self.friends.where(id: id_of_friend).exists?
+  end
 end

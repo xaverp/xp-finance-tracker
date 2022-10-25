@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :friendships
   has_many :friends, through: :friendships
   # Include default devise modules. Others available are:
+
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
@@ -25,5 +26,28 @@ class User < ApplicationRecord
   def full_name
     return "#{first_name} #{last_name}" if first_name || last_name
     "Anonymous"
+  end
+
+  def self.search(param)
+    param.strip!
+    to_send_back = (first_name_matches(param)  + last_name_matches(param) + email_matches(param)).uniq
+    return nil unless to_send_back
+    to_send_back
+  end
+
+  def self.first_name_matches(param)
+    matches('first_name', param)
+  end
+
+  def self.last_name_matches(param) 
+    matches('last_name', param)
+  end
+
+  def self.email_matches(param)
+    matches('email', param)
+  end
+
+  def self.matches(field_name, param) #because this is a class level method we need to add self. IRB example User.matches('email', '@gmail.com')
+    where("#{field_name} like ?", "%#{param}%") #because we are in the user class already we removed User. email and @gmail was replaced with field_name and param
   end
 end
